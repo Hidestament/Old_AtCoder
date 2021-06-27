@@ -1,0 +1,375 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "ABC138.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOJnyuaftr4g/wZhGunXtN8",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Hidestament/AtCoder/blob/main/ABC/ABC138.ipynb%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "9djGixAiGwaF"
+      },
+      "source": [
+        "# [ABC138](https://atcoder.jp/contests/abc138)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "6Ey8SY0xGza5"
+      },
+      "source": [
+        "## [A - Red or Not](https://atcoder.jp/contests/abc138/tasks/abc138_a)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "z6KaopF8Gsky",
+        "outputId": "38834b39-b4f5-4c55-a890-ed76bff66aaa"
+      },
+      "source": [
+        "a = int(input())\n",
+        "s = str(input())\n",
+        "print(s if a >= 3200 else \"red\")"
+      ],
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "3200\n",
+            "pink\n",
+            "pink\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "usxhgK5qG-Ug"
+      },
+      "source": [
+        "## [B - Resistors in Parallel](https://atcoder.jp/contests/abc138/tasks/abc138_b)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "r5FjiUL4HI_T"
+      },
+      "source": [
+        "$$\n",
+        "\\frac{1}{\\frac{1}{A_1} + ... + \\frac{1}{A_N}} \\\\\n",
+        "= \\frac{A_1 * ... * A_N}{(\\frac{1}{A_1} + ... + \\frac{1}{A_N}) * A_1 * ...*A_N}\\\\\n",
+        "= \\frac{A_1 * ... * A_N}{A_2 * ... * A_N + A_1 * A_3 * ... * A_N + ... + A_1 * ... * A_{N-1}}\n",
+        "$$"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "9eIYEPZbG7Uq",
+        "outputId": "e66228ee-f66f-41b2-c822-5c0794139a8f"
+      },
+      "source": [
+        "N = int(input())\n",
+        "A = list(map(int, input().split()))\n",
+        "temp = 1\n",
+        "for i in range(N):\n",
+        "  temp *= A[i]\n",
+        "\n",
+        "temp2 = 0\n",
+        "for i in range(N):\n",
+        "  temp2 += temp // A[i]\n",
+        "\n",
+        "ans = temp / temp2\n",
+        "print(ans)"
+      ],
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "2\n",
+            "10 30\n",
+            "7.5\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "FkXLyF0mH7bM"
+      },
+      "source": [
+        "そのまま計算してもいける?? -> いけた"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aVv-dG_KH2jW",
+        "outputId": "8cc12a8a-562a-4654-986e-4646f0beffbe"
+      },
+      "source": [
+        "N = int(input())\n",
+        "A = list(map(int, input().split()))\n",
+        "temp = 0\n",
+        "for i in range(N):\n",
+        "  temp += 1 / A[i]\n",
+        "print(1 / temp)"
+      ],
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "2\n",
+            "10 30\n",
+            "7.5\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "_VEF0qUeIINo"
+      },
+      "source": [
+        "## [C - Alchemist](https://atcoder.jp/contests/abc138/tasks/abc138_c)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "bsgotUa-QuPV"
+      },
+      "source": [
+        "a,b,cの価値をもつ3つの具材があるとして, どういう順番で合成するとどうなるか考える.\n",
+        "- (a,b)を合成し, それとcを合成する\n",
+        "$$\n",
+        "\\frac{(\\frac{a+b}{2} ) + c }{2} = \\frac{a}{4} + \\frac{b}{4} + \\frac{c}{2}\n",
+        "$$\n",
+        "\n",
+        "ここから, 先に合成すると, 分母の値が大きくなる. よって, 価値のものが小さいものから順番に合成していったほうが良いことがわかる.\n",
+        "\n",
+        "よって, vを予めソートして, このソートを保ったまま, 合成を勧めていけば良い.\n",
+        "\n",
+        "新しくできた素材を, ソートされたvのどこに挿入すれば良いかはbisectを使えば良い."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "VO_1Z_n5IDjW",
+        "outputId": "13eee109-e839-4b27-9e31-afb12a72a716"
+      },
+      "source": [
+        "import bisect\n",
+        "\n",
+        "N = int(input())\n",
+        "v = sorted(list(map(int, input().split())))\n",
+        "\n",
+        "while len(v) > 1:\n",
+        "  v1 = v.pop(0)\n",
+        "  v2 = v.pop(0)\n",
+        "  n = (v1 + v2)/2\n",
+        "  bisect.insort(v, n)\n",
+        "\n",
+        "print(v[0])"
+      ],
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "3\n",
+            "500 300 200\n",
+            "375.0\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "VtzwvCnZJ_NN"
+      },
+      "source": [
+        "## [D - Ki](https://atcoder.jp/contests/abc138/tasks/abc138_d)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "UJFI_B8jRzS9"
+      },
+      "source": [
+        "ある頂点$i$におけるカウンターの値は, $i$と$i$の祖先に直接クエリから与えられた値の合計となる.\n",
+        "\n",
+        "つまり, 各クエリにおいては, どの頂点にどれだけの値が与えられたかを記憶しておいて, 最後に深さ優先探索を用いて, 全ての頂点のカウンターの値を求めれば良い.\n",
+        "\n",
+        "これは, 幅優先探索ではダメ. というのも, ある頂点$i$のカウンターに影響が与えられるのは, その$i$の祖先だからである.\n",
+        "\n",
+        "なので, 縦の探索, 深さ優先探索で実行しないといけない."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hJyxUi1uTKUS"
+      },
+      "source": [
+        "# 再帰上限を上げる\n",
+        "import sys\n",
+        "sys.setrecursionlimit(10**6)"
+      ],
+      "execution_count": 33,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6LJc4peoKBNK",
+        "outputId": "4207ed29-e344-484a-f66f-4fc54bcacc57"
+      },
+      "source": [
+        "N, Q = map(int, input().split())\n",
+        "tree = [[] for _ in range(N)]\n",
+        "for _ in range(N-1):\n",
+        "  a,b = map(int, input().split())\n",
+        "  tree[a-1].append(b-1)\n",
+        "  tree[b-1].append(a-1)"
+      ],
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "4 3\n",
+            "1 2\n",
+            "2 3\n",
+            "2 4\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Wjf02BHeLGxY",
+        "outputId": "24632a5b-4266-4a9c-bd72-3545d882bf69"
+      },
+      "source": [
+        "counter = [0 for _ in range(N)]\n",
+        "for _ in range(Q):\n",
+        "  p, x = map(int, input().split())\n",
+        "  counter[p-1] += x"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "2 10\n",
+            "1 100\n",
+            "3 1\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "VauhNHK4MTcP"
+      },
+      "source": [
+        "ans = [0] * N\n",
+        "ans[0] = counter[0]\n",
+        "def dfs(v, p, cnt):\n",
+        "  for c in tree[v]:\n",
+        "    if c != p:\n",
+        "      ans[c] = cnt+counter[c]\n",
+        "      dfs(c, v, cnt+counter[c])\n",
+        "dfs(0, 0, counter[0])"
+      ],
+      "execution_count": 7,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xzcV8RWHNAX2",
+        "outputId": "8bfcc586-1223-4424-ff58-95d5535d3a72"
+      },
+      "source": [
+        "# 改行しないでリストの要素を出力\n",
+        "print(*ans)"
+      ],
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "100 110 111 110\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    }
+  ]
+}
